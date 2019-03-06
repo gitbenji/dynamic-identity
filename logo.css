@@ -1,0 +1,14 @@
+.logos {
+  display: inline-block;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.logos canvas {
+  display: block;
+  border: 1px solid black;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+}

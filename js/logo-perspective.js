@@ -42,7 +42,7 @@ let paletteArr = [
 
 
 function Canvas(width, height, id){
-    let canvas = this;
+    let that = this;
 
 
     var scene = new THREE.Scene();
@@ -93,7 +93,7 @@ function Canvas(width, height, id){
 
 
 
-    // create room box
+
     let roomSize = 200;
     let geometry = new THREE.BoxGeometry(roomSize, roomSize, roomSize, 1, 1, 1);
     var material = new THREE.MeshLambertMaterial({color: colors.white});
@@ -113,7 +113,6 @@ function Canvas(width, height, id){
 
 
     function RoomObject(x, y, z, size, name, type){
-      let roomObject = this;
       let geometry;
 
       switch(type){
@@ -131,13 +130,14 @@ function Canvas(width, height, id){
       let colorNum = random(0, paletteArr.length);
       let colorPicked = paletteArr[colorNum];
 
+      console.log(colorNum, colorPicked);
     	var material = new THREE.MeshLambertMaterial({color: colorPicked});
     	var cube = new THREE.Mesh(geometry, material);
       cube.position.x = x;
       cube.position.y = y;
       cube.position.z = z;
 
-      if (type == 'plane') {
+      if(type == 'plane'){
         cube.rotation.y = Math.PI * 1.5;
       }
 
@@ -166,21 +166,10 @@ function Canvas(width, height, id){
       }
 
       this.mesh = cube;
-
-      this.useGuiVars = function() {
-        cube.position.x = roomObject.cubeX;
-        cube.position.y = roomObject.cubeY;
-        cube.position.z = roomObject.cubeZ;
-      }
     }
 
-    // object position limit bounds
-    // cubeX (-25, -100)
-    // cubeY (7, 83)
-    // cubeZ (7, 116)
 
-    // this.object = createObject(-75, 20, 20, 20, 'object-1', 'sphere');
-    this.object = createObject(random(-25, -100), random(7, 83), random(7, 116), 20, 'sphere', 'sphere');
+    this.object = createObject(-75, 20, 20, 20, 'object-1', 'sphere');
     this.object2 = createObject(0, 60, 60, {width: 35, height: 50}, 'object-2', 'plane');
 
     function createObject(x, y, z, size, name, type){
@@ -195,12 +184,10 @@ function Canvas(width, height, id){
 
   	function render() {
 
-      camera.position.x = canvas.cameraX;
-      camera.position.y = canvas.cameraY;
-      camera.position.z = canvas.cameraZ;
+      camera.position.x = that.cameraX;
+      camera.position.y = that.cameraY;
+      camera.position.z = that.cameraZ;
       camera.lookAt(0, 0, 0);
-
-      canvas.object.useGuiVars()
 
   		renderer.render(scene, camera);
       requestAnimationFrame(render);
@@ -210,7 +197,7 @@ function Canvas(width, height, id){
 
 $(function(){
 
-  let amount = 0;
+  let amount = 15;
   for(let i = 0; i < amount; i++){
     new Canvas(100, 100, 'logos');
   }
@@ -218,13 +205,9 @@ $(function(){
   let canvas = new Canvas(100, 100, 'logos');
 
   // create dat GUI
-  // const gui = new dat.GUI();
-  // gui.add(canvas, 'cameraX', -500, 500);
-  // gui.add(canvas, 'cameraY', -500, 500);
-  // gui.add(canvas, 'cameraZ', -500, 500);
-  //
-  // gui.add(canvas.object, 'cubeX', -500, 500);
-  // gui.add(canvas.object, 'cubeY', -500, 500);
-  // gui.add(canvas.object, 'cubeZ', -500, 500);
+  const gui = new dat.GUI();
+  gui.add(canvas, 'cameraX', -500, 500);
+  gui.add(canvas, 'cameraY', -500, 500);
+  gui.add(canvas, 'cameraZ', -500, 500);
   // gui.close();
 });
